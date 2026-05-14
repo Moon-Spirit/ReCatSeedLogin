@@ -1,0 +1,8 @@
+{
+    "id": "re-catseedlogin",
+    "version": "2.0.0",
+    "name": "ReCatSeedLogin",
+    "description": "CatSeedLogin Velocity plugin",
+    "author": "CatSeed",
+    "main": "cc.baka9.catseedlogin.ReCatSeedLoginVelocity"
+}

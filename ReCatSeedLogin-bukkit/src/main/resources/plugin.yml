@@ -1,0 +1,25 @@
+name: ReCatSeedLogin
+main: cc.baka9.catseedlogin.ReCatSeedLogin
+author: CatSeed
+version: 2.0.0
+description: A login plugin for Minecraft servers
+api-version: 1.13
+folia-supported: true
+commands:
+  login:
+    description: Login with password
+    usage: /<command> password
+    aliases: [l]
+  register:
+    description: Register with password
+    usage: /<command> password confirmPassword
+    aliases: [reg]
+  changepassword:
+    description: Change your password
+    usage: /<command> oldPassword newPassword confirmNewPassword
+    aliases: [changepw]
+  catseedlogin:
+    description: Admin commands
+    usage: /<command> [args]
+    aliases: [cslogin]
+    permission: catseedlogin.command.catseedlogin
