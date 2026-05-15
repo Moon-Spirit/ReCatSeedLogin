@@ -1,0 +1,5 @@
+name: ReCatSeedLogin
+version: ${version}
+main: cc.baka9.catseedlogin.ReCatSeedLoginBungee
+description: CatSeedLogin BungeeCord plugin
+author: CatSeed

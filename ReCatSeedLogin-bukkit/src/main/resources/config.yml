@@ -1,0 +1,35 @@
+version: 2.0.0
+name: ReCatSeedLogin
+
+mysql:
+  enable: false
+  address: localhost:3306
+  database: catseedlogin
+  username: root
+  password: ""
+
+Communication:
+  enable: false
+  port: 25565
+
+settings:
+  ipCountLimit: 2
+  ipRegCountLimit: 2
+  minLengthID: 2
+  maxLengthID: 15
+  reenterInterval: 60
+  autoKick: 120
+  limitChineseID: true
+  bedrockLoginBypass: true
+  loginwiththesameIP: false
+  beforeLoginNoDamage: true
+  afterLoginBack: true
+  canTpSpawnLocation: true
+  deathStateQuitRecordLocation: true
+  commandWhiteList:
+    - "^/login.*"
+    - "^/register.*"
+    - "^/l.*"
+    - "^/reg.*"
+
+language: zh-CN

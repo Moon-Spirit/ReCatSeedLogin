@@ -1,0 +1,64 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+  release:
+    types: [ created ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'gradle'
+
+    - name: Make gradlew executable
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build --no-daemon
+
+    - name: Upload Bukkit Artifact
+      uses: actions/upload-artifact@v4
+      if: github.event_name == 'release'
+      with:
+        name: ReCatSeedLogin-bukkit
+        path: ReCatSeedLogin-bukkit/build/libs/*.jar
+
+    - name: Upload Bungee Artifact
+      uses: actions/upload-artifact@v4
+      if: github.event_name == 'release'
+      with:
+        name: ReCatSeedLogin-bungee
+        path: ReCatSeedLogin-bungee/build/libs/*.jar
+
+    - name: Upload Velocity Artifact
+      uses: actions/upload-artifact@v4
+      if: github.event_name == 'release'
+      with:
+        name: ReCatSeedLogin-velocity
+        path: ReCatSeedLogin-velocity/build/libs/*.jar
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      if: github.event_name == 'release'
+      with:
+        files: |
+          ReCatSeedLogin-bukkit/build/libs/*.jar
+          ReCatSeedLogin-bungee/build/libs/*.jar
+          ReCatSeedLogin-velocity/build/libs/*.jar
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
