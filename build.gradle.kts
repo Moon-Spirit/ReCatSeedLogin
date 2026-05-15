@@ -14,11 +14,8 @@ allprojects {
         maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots/") }
         maven { url = uri("https://oss.sonatype.org/content/repositories/releases/") }
         maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
-        maven { url = uri("https://repo.codemc.io/repository/maven-releases/") }
-        maven { url = uri("https://repo.codemc.io/repository/maven-snapshots/") }
         maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://libraries.minecraft.net") }
         maven { url = uri("https://mvn-repo.arim.space/lesser-gpl3/") }
-        maven { url = uri("https://repo.handyplus.cn/repository/maven-public/") }
     }
 }

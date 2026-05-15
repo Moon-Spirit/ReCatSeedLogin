@@ -22,7 +22,6 @@ java {
 dependencies {
     compileOnly("net.md-5:bungeecord-api:1.21-R0.1-SNAPSHOT")
     compileOnly("org.yaml:snakeyaml:2.2")
-    implementation("cc.baka9:handyplus:3.2.8")
 }
 
 tasks.shadowJar {

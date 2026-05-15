@@ -23,7 +23,6 @@ dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.2.0-SNAPSHOT")
     compileOnly("org.yaml:snakeyaml:2.2")
     compileOnly("javax.inject:javax.inject-api:1.0")
-    implementation("cc.baka9:handyplus:3.2.8")
 }
 
 tasks.shadowJar {
