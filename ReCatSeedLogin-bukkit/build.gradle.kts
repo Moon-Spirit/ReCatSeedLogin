@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    id("io.github.goooler.shadow")
+    id("com.gradleup.shadow") version "8.3.0"
 }
 
 val baseDir = "src/main/kotlin"
@@ -13,10 +13,10 @@ sourceSets {
     }
 }
 
-kotlin {
-    jvmToolchain(17)
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 dependencies {
@@ -28,29 +28,21 @@ dependencies {
     compileOnly("com.earth2me:QQ:5.0.0")
     compileOnly("jakarta.mail:jakarta.mail-api:2.1.3")
     compileOnly("com.sun.mail:jakarta.mail:2.0.1")
-    
+
     implementation("space.arim.morepaperlib:morepaperlib-paper:0.4.0")
     implementation("cc.baka9:handyplus:3.2.8")
-    
+
     compileOnly("org.yaml:snakeyaml:2.2") {
         because("Conflict with paper-api")
     }
 }
 
-tasks {
-    shadow {
-        relocate("org.yaml.snakeyaml", "cc.baka9.catseedlogin.lib.snakeyaml")
-        relocate("jakarta.mail", "cc.baka9.catseedlogin.lib.mail")
-        archiveClassifier.set("")
-    }
-    
-    build {
-        dependsOn(shadow)
-    }
+tasks.shadowJar {
+    relocate("org.yaml.snakeyaml", "cc.baka9.catseedlogin.lib.snakeyaml")
+    relocate("jakarta.mail", "cc.baka9.catseedlogin.lib.mail")
+    archiveClassifier.set("")
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
+tasks.named("build") {
+    dependsOn("shadowJar")
 }

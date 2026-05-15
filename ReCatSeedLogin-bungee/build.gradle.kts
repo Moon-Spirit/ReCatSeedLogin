@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    id("io.github.goooler.shadow")
+    id("com.gradleup.shadow") version "8.3.0"
 }
 
 val baseDir = "src/main/kotlin"
@@ -13,8 +13,10 @@ sourceSets {
     }
 }
 
-kotlin {
-    jvmToolchain(17)
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 dependencies {
@@ -23,11 +25,10 @@ dependencies {
     implementation("cc.baka9:handyplus:3.2.8")
 }
 
-tasks {
-    shadow { archiveClassifier.set("") }
-    build { dependsOn(shadow) }
+tasks.shadowJar {
+    archiveClassifier.set("")
 }
 
-java {
-    toolchain { languageVersion.set(JavaLanguageVersion.of(17)) }
+tasks.named("build") {
+    dependsOn("shadowJar")
 }
