@@ -77,7 +77,7 @@ jobs:
           echo "date=$(date +'%Y年%m月%d日 %H时%M分%S秒')" >> $GITHUB_OUTPUT
 
       - name: 创建版本发布
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v1.0.0
           name: ReCatSeedLogin-v1.0.0
