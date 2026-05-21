@@ -31,21 +31,21 @@ jobs:
       run: ./gradlew build --no-daemon
 
     - name: Upload Bukkit Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: github.event_name == 'release'
       with:
         name: ReCatSeedLogin-bukkit
         path: ReCatSeedLogin-bukkit/build/libs/*.jar
 
     - name: Upload Bungee Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: github.event_name == 'release'
       with:
         name: ReCatSeedLogin-bungee
         path: ReCatSeedLogin-bungee/build/libs/*.jar
 
     - name: Upload Velocity Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       if: github.event_name == 'release'
       with:
         name: ReCatSeedLogin-velocity
