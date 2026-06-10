@@ -33,25 +33,36 @@ abstract class SQL(protected var plugin: JavaPlugin) {
             throw e
         }
 
-        try {
-            flush(BufferStatement("ALTER TABLE accounts ADD email CHAR(255)", emptyArray()))
-        } catch (e: SQLException) {
-            val msg = e.message ?: ""
-            if (!msg.lowercase().contains("duplicate column name")) throw e
+        if (!hasColumn("email")) {
+            safeAddColumn("ALTER TABLE accounts ADD email CHAR(255)")
         }
-
-        try {
-            flush(BufferStatement("ALTER TABLE accounts ADD ips CHAR(255)", emptyArray()))
-        } catch (e: SQLException) {
-            val msg = e.message ?: ""
-            if (!msg.lowercase().contains("duplicate column name")) throw e
+        if (!hasColumn("ips")) {
+            safeAddColumn("ALTER TABLE accounts ADD ips CHAR(255)")
         }
+        if (!hasColumn("location")) {
+            safeAddColumn("ALTER TABLE accounts ADD location CHAR(255) DEFAULT NULL")
+        }
+    }
 
+    private fun hasColumn(columnName: String): Boolean {
+        return try {
+            BufferStatement("SELECT 1 FROM pragma_table_info('accounts') WHERE name = ?", arrayOf<Any>(columnName))
+                .prepareStatement(getConnection()).use { ps ->
+                    ps.executeQuery().use { rs -> rs.next() }
+                }
+        } catch (e: SQLException) {
+            false
+        }
+    }
+
+    private fun safeAddColumn(sql: String) {
         try {
-            flush(BufferStatement("ALTER TABLE accounts ADD location CHAR(255)", emptyArray()))
+            flush(BufferStatement(sql, emptyArray()))
         } catch (e: SQLException) {
             val msg = e.message ?: ""
-            if (!msg.lowercase().contains("duplicate column name")) throw e
+            if (!msg.lowercase().contains("duplicate column name")) {
+                plugin.logger.warning("Schema migration failed: $sql - ${e.message}")
+            }
         }
     }
 
