@@ -24,13 +24,17 @@ import java.util.Locale
 import java.util.concurrent.ConcurrentHashMap
 
 class I18n(
- private val dataFolder: File,
- private val resourceProvider: ResourceProvider,
+    private val dataFolder: File,
+    private val resourceProvider: ResourceProvider,
 ) {
 
- interface ResourceProvider {
- fun getResource(name: String): InputStream?
- }
+    interface ResourceProvider {
+        fun getResource(name: String): InputStream?
+    }
+
+    init {
+        instance = this
+    }
 
  private var currentLocale: Locale = Locale.SIMPLIFIED_CHINESE
  private val messages: MutableMap<Locale, MutableMap<String, String>> = ConcurrentHashMap()
