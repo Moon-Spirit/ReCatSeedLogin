@@ -9,7 +9,7 @@ abstract class Task : Runnable {
 
     companion object {
         private val scheduledTasks: MutableList<ScheduledTask> = ArrayList()
-        private val plugin: CatSeedLogin = CatSeedLogin.instance
+        private val plugin: CatSeedLogin = CatSeedLogin.instance ?: error("CatSeedLogin not initialized")
         private var taskAutoKick: TaskAutoKick? = null
         private var taskSendLoginMessage: TaskSendLoginMessage? = null
 

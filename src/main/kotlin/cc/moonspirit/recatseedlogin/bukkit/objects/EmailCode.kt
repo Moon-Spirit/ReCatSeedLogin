@@ -1,4 +1,4 @@
-package cc.moonspirit.recatseedlogin.bukkit.object
+package cc.moonspirit.recatseedlogin.bukkit.objects
 
 import cc.moonspirit.recatseedlogin.common.util.DateUtil
 import java.util.Optional

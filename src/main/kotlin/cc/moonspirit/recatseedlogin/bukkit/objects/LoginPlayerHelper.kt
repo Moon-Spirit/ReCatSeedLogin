@@ -1,4 +1,4 @@
-package cc.moonspirit.recatseedlogin.bukkit.object
+package cc.moonspirit.recatseedlogin.bukkit.objects
 
 import cc.moonspirit.recatseedlogin.bukkit.Cache
 import cc.moonspirit.recatseedlogin.bukkit.CatSeedLogin
@@ -36,7 +36,7 @@ object LoginPlayerHelper {
         try {
             set.add(lp)
         } catch (e: Exception) {
-            CatSeedLogin.instance.logger.severe("Failed to add LoginPlayer to set: " + e.message)
+            CatSeedLogin.instance?.logger?.severe("Failed to add LoginPlayer to set: " + e.message)
         }
     }
 
@@ -46,7 +46,7 @@ object LoginPlayerHelper {
         try {
             set.remove(lp)
         } catch (e: Exception) {
-            CatSeedLogin.instance.logger.severe("Failed to remove LoginPlayer from set: " + e.message)
+            CatSeedLogin.instance?.logger?.severe("Failed to remove LoginPlayer from set: " + e.message)
         }
     }
 
@@ -56,7 +56,7 @@ object LoginPlayerHelper {
         try {
             set.removeIf { lp: LoginPlayer? -> lp != null && name == lp.name }
         } catch (e: Exception) {
-            CatSeedLogin.instance.logger.severe("Failed to remove LoginPlayer by name: $name - ${e.message}")
+            CatSeedLogin.instance?.logger?.severe("Failed to remove LoginPlayer by name: $name - ${e.message}")
         }
     }
 
@@ -113,7 +113,7 @@ object LoginPlayerHelper {
             try {
                 playerExitTimes[playerName] = System.currentTimeMillis()
             } catch (e: Exception) {
-                CatSeedLogin.instance.logger.severe("Failed to record player exit time: $playerName - ${e.message}")
+                CatSeedLogin.instance?.logger?.severe("Failed to record player exit time: $playerName - ${e.message}")
             }
         }
     }
@@ -170,8 +170,8 @@ object LoginPlayerHelper {
                 return
             }
 
-            var ipsList: MutableList<String> = if (lp.ipsList != null)
-                ArrayList(lp.ipsList)
+            var ipsList: MutableList<String> = if (lp.getIpsList().isNotEmpty())
+                ArrayList(lp.getIpsList())
             else
                 ArrayList()
             ipsList = ipsList.stream().distinct().collect(Collectors.toList()) as MutableList<String>
@@ -181,16 +181,16 @@ object LoginPlayerHelper {
             ipsList.add(currentIp)
             lp.ips = ipsList.joinToString(";")
 
-            CatSeedLogin.instance.runTaskAsync(Runnable {
+            CatSeedLogin.instance?.runTaskAsync(Runnable {
                 try {
-                    CatSeedLogin.sql.edit(lp)
+                    CatSeedLogin.sql?.edit(lp)
                     Cache.refresh(lp.name)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             })
         } catch (e: Exception) {
-            CatSeedLogin.instance.logger.warning("Failed to record IP for player: " + player?.name + " - " + e.message)
+            CatSeedLogin.instance?.logger?.warning("Failed to record IP for player: " + player?.name + " - " + e.message)
         }
     }
 

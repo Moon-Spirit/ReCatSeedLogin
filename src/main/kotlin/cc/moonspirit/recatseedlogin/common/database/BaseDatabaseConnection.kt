@@ -5,6 +5,7 @@ import java.sql.PreparedStatement
 import java.sql.SQLException
 
 abstract class BaseDatabaseConnection {
+    @get:JvmName("getConn")
     var connection: Connection? = null
 
     protected fun isConnectionValid(): Boolean {

@@ -6,7 +6,7 @@
 
     <groupId>cc.moonspirit</groupId>
     <artifactId>ReCatSeedLogin</artifactId>
-    <version>2.0.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>ReCatSeedLogin</name>
@@ -16,13 +16,11 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>21</java.version>
-
         <kotlin.version>2.4.0</kotlin.version>
         <kotlin.compiler.jvmTarget>21</kotlin.compiler.jvmTarget>
 
-        <bukkit.version>1.12.2-R0.1-SNAPSHOT</bukkit.version>
         <paper.version>26.1.2.build.69-stable</paper.version>
-        <spigot.version>1.15.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.21.1-R0.1-SNAPSHOT</spigot.version>
         <folia.version>26.1.2.build.8-stable</folia.version>
         <protocollib.version>5.4.0</protocollib.version>
         <bungeecord.version>1.21-R0.4</bungeecord.version>
@@ -54,34 +52,17 @@
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/repository/public/</url>
-        </repository>
-        <repository>
-            <id>bungeecord-repo</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-        <repository>
-            <id>velocity-repo</id>
-            <url>https://nexus.velocitypowered.com/repository/maven-public/</url>
-        </repository>
-        <repository>
-            <id>opencollab-snapshot</id>
-            <url>https://repo.opencollab.dev/maven-snapshots/</url>
-        </repository>
-        <repository>
-            <id>arim-mvn-lgpl3</id>
+            <id>arim-lgpl3</id>
             <url>https://mvn-repo.arim.space/lesser-gpl3/</url>
         </repository>
-        <repository>
-            <id>handyplus</id>
-            <url>https://repo.handyplus.cn/repository/maven-public/</url>
-        </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <dependencies>
         <dependency>
@@ -89,12 +70,6 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>${bukkit.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -199,6 +174,7 @@
             <artifactId>api</artifactId>
             <version>${floodgate.version}</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -226,13 +202,6 @@
                     <include>**/*.properties</include>
                     <include>**/*.txt</include>
                     <include>*.*</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/java</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/Version.java</include>
                 </includes>
             </resource>
         </resources>

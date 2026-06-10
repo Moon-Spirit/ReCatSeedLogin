@@ -67,8 +67,6 @@ abstract class ConfigManager(protected val dataFolder: File) {
         }
     }
 
-    fun getDataFolder(): File = dataFolder
-
     fun createDefaultConfig(name: String?) {
         if (name == null) return
         val fileName = if (name.endsWith(".yml")) name else "$name.yml"

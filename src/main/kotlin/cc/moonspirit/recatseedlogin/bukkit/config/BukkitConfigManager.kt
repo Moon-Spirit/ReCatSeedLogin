@@ -23,7 +23,7 @@ class BukkitConfigManager(private val plugin: JavaPlugin) : BaseConfigManager() 
 
     override fun getConfig(name: String): YamlConfiguration {
         val fileName = if (name.endsWith(".yml")) name else "$name.yml"
-        val folder = dataFolder ?: error("dataFolder not initialized")
+        val folder = getDataFolder() ?: error("getDataFolder() not initialized")
         val file = File(folder, fileName)
         val config = YamlConfiguration.loadConfiguration(file)
 
@@ -44,7 +44,7 @@ class BukkitConfigManager(private val plugin: JavaPlugin) : BaseConfigManager() 
     override fun createDefaultConfig(name: String?) {
         if (name == null) return
         val fileName = if (name.endsWith(".yml")) name else "$name.yml"
-        val folder = dataFolder ?: return
+        val folder = getDataFolder() ?: return
         val file = File(folder, fileName)
         if (!file.exists()) {
             try {
@@ -68,7 +68,7 @@ class BukkitConfigManager(private val plugin: JavaPlugin) : BaseConfigManager() 
     }
 
     private fun mergeDefaults(config: YamlConfiguration, defaults: YamlConfiguration) {
-        for ((key, value) in defaults.dataMap) {
+        for ((key, value) in defaults.getDataMap()) {
             if (!config.contains(key)) {
                 config.set(key, value)
             }
@@ -78,26 +78,26 @@ class BukkitConfigManager(private val plugin: JavaPlugin) : BaseConfigManager() 
     fun setSpawnLocation(location: Location) {
         val locStr = String.format(
             "%s:%.2f:%.2f:%.2f:%.2f:%.2f",
-            location.world.name,
+            location.world?.name ?: "unknown",
             location.x,
             location.y,
             location.z,
             location.yaw,
             location.pitch
         )
-        mainConfig?.set(ConfigConstants.Path.SPAWN_LOCATION, locStr)
+        getMainConfig()?.set(ConfigConstants.Path.SPAWN_LOCATION, locStr)
         saveConfig("config.yml")
     }
 
     fun getBukkitSpawnLocation(): Location {
         val spawn: SpawnLocation = getSpawnLocation()
-        var world: World? = Bukkit.getWorld(spawn.world)
+        var world: World? = Bukkit.getWorld(spawn.getWorld())
         if (world == null) {
             world = Bukkit.getWorlds()[0]
         }
-        return Location(world, spawn.x, spawn.y, spawn.z, spawn.yaw, spawn.pitch)
+        return Location(world, spawn.getX(), spawn.getY(), spawn.getZ(), spawn.getYaw(), spawn.getPitch())
     }
 
     val dataFolderFile: File?
-        get() = dataFolder
+        get() = getDataFolder()
 }

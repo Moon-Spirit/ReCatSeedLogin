@@ -10,7 +10,7 @@ import jakarta.mail.internet.MimeMessage
 import java.util.Properties
 
 object EmailSender {
-    private val config = cc.baka9.catseedlogin.bukkit.Config.EmailVerify
+    private val config = cc.moonspirit.recatseedlogin.bukkit.Config.EmailVerify
 
     fun sendEmail(receiveMailAccount: String?, subject: String?, content: String?) {
         if (receiveMailAccount.isNullOrEmpty()) {

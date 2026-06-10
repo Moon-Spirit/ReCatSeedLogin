@@ -2,7 +2,7 @@ package cc.moonspirit.recatseedlogin.bukkit.task
 
 import cc.moonspirit.recatseedlogin.bukkit.Cache
 import cc.moonspirit.recatseedlogin.bukkit.Config
-import cc.moonspirit.recatseedlogin.bukkit.object.LoginPlayerHelper
+import cc.moonspirit.recatseedlogin.bukkit.objects.LoginPlayerHelper
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 

@@ -14,31 +14,31 @@ abstract class SQL(protected var plugin: JavaPlugin) {
     @Throws(SQLException::class)
     fun init() {
         try {
-            flush(BufferStatement("CREATE TABLE IF NOT EXISTS accounts (name CHAR(255), password CHAR(255), email CHAR(255), ips CHAR(255), lastAction TIMESTAMP, location CHAR(255) DEFAULT NULL)"))
+            flush(BufferStatement("CREATE TABLE IF NOT EXISTS accounts (name CHAR(255), password CHAR(255), email CHAR(255), ips CHAR(255), lastAction TIMESTAMP, location CHAR(255) DEFAULT NULL)", emptyArray()))
         } catch (e: SQLException) {
             plugin.logger.severe("Failed to create accounts table: " + e.message)
             throw e
         }
 
         try {
-            flush(BufferStatement("ALTER TABLE accounts ADD email CHAR(255)"))
+            flush(BufferStatement("ALTER TABLE accounts ADD email CHAR(255)", emptyArray()))
         } catch (e: SQLException) {
             val msg = e.message ?: ""
-            if (!msg.toLowerCase().contains("duplicate column name")) throw e
+            if (!msg.lowercase().contains("duplicate column name")) throw e
         }
 
         try {
-            flush(BufferStatement("ALTER TABLE accounts ADD ips CHAR(255)"))
+            flush(BufferStatement("ALTER TABLE accounts ADD ips CHAR(255)", emptyArray()))
         } catch (e: SQLException) {
             val msg = e.message ?: ""
-            if (!msg.toLowerCase().contains("duplicate column name")) throw e
+            if (!msg.lowercase().contains("duplicate column name")) throw e
         }
 
         try {
-            flush(BufferStatement("ALTER TABLE accounts ADD location CHAR(255)"))
+            flush(BufferStatement("ALTER TABLE accounts ADD location CHAR(255)", emptyArray()))
         } catch (e: SQLException) {
             val msg = e.message ?: ""
-            if (!msg.toLowerCase().contains("duplicate column name")) throw e
+            if (!msg.lowercase().contains("duplicate column name")) throw e
         }
     }
 
@@ -47,7 +47,7 @@ abstract class SQL(protected var plugin: JavaPlugin) {
             flush(
                 BufferStatement(
                     "INSERT INTO accounts (name, password, lastAction, email, ips, location) VALUES (?, ?, ?, ?, ?, ?)",
-                    arrayOf(lp.name, lp.password, Date(), lp.email, lp.ips, lp.location)
+                    arrayOf<Any>(lp.name, lp.password, Date(), lp.email ?: "", lp.ips ?: "", lp.location ?: "")
                 )
             )
         } catch (e: SQLException) {
@@ -68,7 +68,7 @@ abstract class SQL(protected var plugin: JavaPlugin) {
             flush(
                 BufferStatement(
                     "UPDATE accounts SET password = ?, lastAction = ?, email = ?, ips = ?, location = ? WHERE name = ?",
-                    arrayOf(lp.password, Date(), lp.email, lp.ips, lp.location, lp.name)
+                    arrayOf<Any>(lp.password, Date(), lp.email ?: "", lp.ips ?: "", lp.location ?: "", lp.name)
                 )
             )
         } catch (e: SQLException) {
@@ -130,7 +130,7 @@ abstract class SQL(protected var plugin: JavaPlugin) {
 
     fun getAll(): List<LoginPlayer> {
         try {
-            BufferStatement("SELECT * FROM accounts").prepareStatement(getConnection()).use { ps ->
+            BufferStatement("SELECT * FROM accounts", emptyArray()).prepareStatement(getConnection()).use { ps ->
                 ps.executeQuery().use { resultSet ->
                     val lps = ArrayList<LoginPlayer>()
                     while (resultSet.next()) {

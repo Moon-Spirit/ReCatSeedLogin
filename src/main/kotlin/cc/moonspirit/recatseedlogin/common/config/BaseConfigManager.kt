@@ -12,24 +12,33 @@ import java.util.regex.Pattern
 
 abstract class BaseConfigManager : CoreConfig, DatabaseConfig, BungeeCordConfig, EmailConfig {
 
-    protected var dataFolder: File? = null
-    protected var i18n: I18n? = null
-    protected var mainConfig: YamlConfiguration? = null
+    private var dataFolderInternal: File? = null
+    private var i18nInternal: I18n? = null
+    private var mainConfigInternal: YamlConfiguration? = null
 
     private val cfg: YamlConfiguration
-        get() = mainConfig ?: error("mainConfig not initialized; call initConfig() first")
+        get() = mainConfigInternal ?: error("mainConfig not initialized; call initConfig() first")
 
     private val i18nInstance: I18n
-        get() = i18n ?: error("i18n not initialized; call initConfig() first")
+        get() = i18nInternal ?: error("i18n not initialized; call initConfig() first")
+
+    @JvmName("getDataFolder")
+    fun getDataFolder(): File = dataFolderInternal ?: error("dataFolder not initialized")
+
+    @JvmName("getI18n")
+    fun getI18n(): I18n = i18nInternal ?: error("i18n not initialized; call initConfig() first")
+
+    @JvmName("getMainConfig")
+    fun getMainConfig(): YamlConfiguration = cfg
 
     protected fun initConfig(dataFolder: File, configFileName: String) {
-        this.dataFolder = dataFolder
+        dataFolderInternal = dataFolder
         if (!dataFolder.exists()) {
             dataFolder.mkdirs()
         }
         createDefaultConfig(configFileName)
-        mainConfig = getConfig(configFileName)
-        i18n = I18n(dataFolder, object : I18n.ResourceProvider {
+        mainConfigInternal = getConfig(configFileName)
+        i18nInternal = I18n(dataFolder, object : I18n.ResourceProvider {
             override fun getResource(name: String): InputStream? = this@BaseConfigManager.getResource(name)
         })
         val language = cfg.getString(
@@ -49,7 +58,7 @@ abstract class BaseConfigManager : CoreConfig, DatabaseConfig, BungeeCordConfig,
 
     open fun reload() {
         reloadAll()
-        mainConfig = getConfig("config.yml")
+        mainConfigInternal = getConfig("config.yml")
         val language = cfg.getString(
             ConfigConstants.Path.LANGUAGE,
             ConfigConstants.DEFAULT_LANGUAGE
@@ -59,12 +68,8 @@ abstract class BaseConfigManager : CoreConfig, DatabaseConfig, BungeeCordConfig,
     }
 
     open fun reloadAll() {
-        mainConfig = getConfig("config.yml")
+        mainConfigInternal = getConfig("config.yml")
     }
-
-    fun getI18n(): I18n? = i18n
-
-    fun getMainConfig(): YamlConfiguration = cfg
 
     override fun getIpRegisterCountLimit(): Int =
         cfg.getInt(
