@@ -2,14 +2,16 @@
 
 <div align="center">
 
-[![Build Status](https://github.com/shulng/CatSeedLogin-v2/actions/workflows/maven.yml/badge.svg)](https://github.com/shulng/CatSeedLogin-v2/actions/workflows/maven.yml)
-[![Release](https://img.shields.io/github/v/release/shulng/CatSeedLogin-v2)](https://github.com/shulng/CatSeedLogin-v2/releases/latest)
-[![License](https://img.shields.io/github/license/shulng/CatSeedLogin-v2)](LICENSE)
-[![Downloads](https://img.shields.io/github/downloads/shulng/CatSeedLogin-v2/total)](https://github.com/shulng/CatSeedLogin-v2/releases)
+[![Build Status](https://github.com/Moon-Spirit/ReCatSeedLogin/actions/workflows/maven.yml/badge.svg)](https://github.com/Moon-Spirit/ReCatSeedLogin/actions/workflows/maven.yml)
+[![Release](https://img.shields.io/github/v/release/Moon-Spirit/ReCatSeedLogin)](https://github.com/Moon-Spirit/ReCatSeedLogin/releases/latest)
+[![License](https://img.shields.io/github/license/Moon-Spirit/ReCatSeedLogin)](LICENSE)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.0-7F52FF.svg)](https://kotlinlang.org)
+[![JDK](https://img.shields.io/badge/JDK-21-orange.svg)](https://openjdk.org/projects/jdk/21/)
 
-**🚀 高性能Minecraft登录插件 | 支持1.12-1.21版本 | 支持BungeeCord**
+**🚀 高性能Minecraft登录插件 | 支持1.12-1.21版本 | 支持BungeeCord + Velocity**
 
 > 基于Spigot API 1.13.2开发，理论支持1.12 ~ 1.21版本，低版本向上兼容
+> **Java→Kotlin 重构版** - 包路径 `cc.moonspirit.recatseedlogin.*`，JVM 21，移除 Lombok
 
 </div>
 
@@ -17,6 +19,7 @@
 
 - [✨ 核心功能](#-核心功能)
 - [🏗️ 架构改进](#-架构改进)
+- [🔄 Kotlin 重构](#-kotlin-重构)
 - [📥 下载安装](#-下载安装)
 - [🎯 快速开始](#-快速开始)
 - [📖 指令大全](#-指令大全)
@@ -25,6 +28,7 @@
 - [🔗 BungeeCord配置](#-bungeecord配置)
 - [👨‍💻 开发者API](#开发者api)
 - [💬 社区支持](#-社区支持)
+- [📝 更新日志](#-更新日志)
 
 ## ✨ 核心功能
 
@@ -86,14 +90,62 @@
 - 🔄 **异步操作** - 位置保存异步执行，提高性能
 - 📊 **兼容性** - 自动升级现有数据库表结构
 
+## 🔄 Kotlin 重构
+
+本仓库是 **CatSeedLogin v2.0.0 的 Kotlin 重写版本**，与上游 Java 版本保持功能完全等价。
+
+### 📦 重构内容
+
+| 项目 | Java 版 | Kotlin 重构版 |
+|------|---------|---------------|
+| 源码语言 | Java 8 | **Kotlin 2.4.0** |
+| 编译目标 | JDK 8 | **JDK 21** |
+| 包路径 | `cc.baka9.catseedlogin.*` | **`cc.moonspirit.recatseedlogin.*`** |
+| 注解处理器 | Lombok (`@Getter`/`@Setter`/`@ToString`) | **Kotlin 原生**（data class、`companion object`） |
+| MySQL 驱动 | `mysql-connector-java` | **`mysql-connector-j`** |
+| 邮件 API | `javax.mail` | **`jakarta.mail` + Angus mail** |
+| 源码文件数 | 64 个 `.java` | **64 个 `.kt`** |
+| 运行时类数 | ~100 | **109 Kotlin 类 + 989 stdlib 类** |
+
+### ✨ 重构亮点
+
+- **🛡️ 行为完全保留**：登录流程、密码加密、数据库 schema、BungeeCord 协议、邮箱验证——全部 1:1 翻译
+- **🚫 零业务逻辑修改**：Metis 护栏严格执行，无 `!!`、无 coroutines、无 sealed class、无 sealed value
+- **🔧 Maven 仓库现代化**：使用 `repo.papermc.io`（Maven Central 镜像）作为唯一依赖仓库
+- **📦 单一入口**：`mvn -B clean package` → `target/ReCatSeedLogin-1.0.0.jar`（21MB，含 Kotlin stdlib）
+- **🎯 三平台入口**：Bukkit（`bukkit/CatSeedLogin`）、BungeeCord（`bungee/PluginMain`）、Velocity（`velocity/PluginMain`）
+
+### 🏗️ 构建要求
+
+- **JDK 21+**（构建时）
+- **Maven 3.9+**（构建时）
+- **JDK 17+** 或 **JDK 21**（运行时，取决于服务器）
+
+### 🔨 本地构建
+
+```bash
+git clone https://github.com/Moon-Spirit/ReCatSeedLogin.git
+cd ReCatSeedLogin
+mvn -B clean package -DskipTests
+# 产物: target/ReCatSeedLogin-1.0.0.jar
+```
+
+### 📝 重构注意事项
+
+- **包名变更**：从 `cc.baka9.catseedlogin.*` 改为 `cc.moonspirit.recatseedlogin.*`
+- **plugin.yml main**：已更新为 `cc.moonspirit.recatseedlogin.bukkit.CatSeedLogin`
+- **API 兼容性**：源代码 1:1 翻译，所有方法签名、字段、行为保持一致
+- **Maven Central 已移除**：不再使用 Sonatype、dmulloy2、handyplus 等失效仓库
+- **Spigot API 替代 Bukkit**：移除 `org.bukkit:bukkit` 依赖（Spigot API 已包含）
+
 ## 📥 下载安装
 
 ### 📦 下载地址
 | 版本类型 | 下载链接 |
 |---------|----------|
-| 🔥 **最新稳定版** | [GitHub Releases](https://github.com/shulng/CatSeedLogin-v2/releases/latest) |
-| 🔄 **自动构建版** | [GitHub Actions](https://github.com/shulng/CatSeedLogin-v2/actions/workflows/maven.yml) |
-| 📚 **历史版本** | [旧版归档](https://github.com/CatSeed/CatSeedLogin/tags) |
+| 🔥 **最新稳定版** | [GitHub Releases](https://github.com/Moon-Spirit/ReCatSeedLogin/releases/latest) |
+| 🔄 **自动构建版** | [GitHub Actions](https://github.com/Moon-Spirit/ReCatSeedLogin/actions/workflows/maven.yml) |
+| 📚 **历史版本 (Java)** | [shulng/CatSeedLogin-v2](https://github.com/shulng/CatSeedLogin-v2/releases) |
 
 ### 🚀 安装步骤
 
@@ -369,12 +421,26 @@ proxy:
 - 📖 **贡献代码**：[Pull Request](https://github.com/shulng/CatSeedLogin-v2/pulls)
 
 ### 📝 更新日志
-#### v2.0.0 (2026-05-05)
+#### v1.0.0-kotlin-port (2026-06-10)
+- 🔄 **Java → Kotlin 完整翻译** - 64 个 `.java` → 64 个 `.kt`，功能 100% 等价
+- 📦 **包路径变更** - `cc.baka9.catseedlogin.*` → `cc.moonspirit.recatseedlogin.*`
+- 🚀 **JDK 8 → 21** - 编译目标升级到 LTS 21
+- 🚫 **移除 Lombok** - 用 Kotlin `data class` + `companion object` 替代
+- 📚 **依赖升级** - `mysql-connector-java` → `mysql-connector-j`，`javax.mail` → `jakarta.mail`
+- 🏗️ **Maven 仓库统一** - 使用 `repo.papermc.io` 作为唯一仓库（替代 5 个失效仓库）
+- 🧹 **移除冗余依赖** - 删除 `org.bukkit:bukkit`（Spigot API 已包含）
+- 🔨 **重构保留所有功能** - 登录、邮箱、BungeeCord 同步、数据库迁移全部 1:1 保留
+- 📝 **更新 plugin.yml** - `main:` 字段指向新主类
+- 🏷️ **版本号** - 重构版使用新版本号 `1.0.0` 标识
+
+#### v2.0.0 (2026-05-05) — 上游 Java 版
 - 🎯 **统一架构重构** - 统一配置管理、统一国际化系统
 - 📄 **单一配置文件** - 从多个分散配置合并为统一config.yml
 - 🌍 **多语言支持** - 内置中文、英文，支持自定义语言
 - 📍 **数据库改进** - 玩家离线位置存储从配置文件迁移到数据库
 - 🔗 **统一API接口** - 平台无关的抽象接口层
+
+> 📚 完整 Java 版本历史请参考 [shulng/CatSeedLogin-v2 releases](https://github.com/shulng/CatSeedLogin-v2/releases)
 
 ---
 
