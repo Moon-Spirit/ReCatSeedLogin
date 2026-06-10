@@ -33,7 +33,8 @@ class CatSeedPlayerLoginEvent(val player: Player, private val email: String?, va
     }
 
     companion object {
-        private val handlers = HandlerList()
+        @JvmField
+        val handlers: HandlerList = HandlerList()
 
         @JvmStatic
         fun getHandlerList(): HandlerList = handlers

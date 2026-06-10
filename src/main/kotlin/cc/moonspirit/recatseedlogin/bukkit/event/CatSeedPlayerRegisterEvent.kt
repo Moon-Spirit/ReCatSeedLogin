@@ -22,7 +22,8 @@ class CatSeedPlayerRegisterEvent(val player: Player) : Event() {
     override fun getHandlers(): HandlerList = handlers
 
     companion object {
-        private val handlers = HandlerList()
+        @JvmField
+        val handlers: HandlerList = HandlerList()
 
         @JvmStatic
         fun getHandlerList(): HandlerList = handlers
