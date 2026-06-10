@@ -20,7 +20,7 @@ import java.util.Optional
 
 class CatSeedPlayerLoginEvent(val player: Player, private val email: String?, val result: Result) : Event() {
 
-    override fun getHandlers(): HandlerList = handlers
+    override fun getHandlers(): HandlerList = HANDLERS
 
     fun getEmail(): Optional<String> {
         return Optional.ofNullable(email)
@@ -34,9 +34,9 @@ class CatSeedPlayerLoginEvent(val player: Player, private val email: String?, va
 
     companion object {
         @JvmField
-        val handlers: HandlerList = HandlerList()
+        val HANDLERS: HandlerList = HandlerList()
 
         @JvmStatic
-        fun getHandlerList(): HandlerList = handlers
+        fun getHandlerList(): HandlerList = HANDLERS
     }
 }
