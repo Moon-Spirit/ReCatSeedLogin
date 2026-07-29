@@ -33,7 +33,7 @@
         <commons-net.version>3.13.0</commons-net.version>
         <jakarta-mail.version>2.1.5</jakarta-mail.version>
         <angus-mail.version>2.0.5</angus-mail.version>
-        <folialib.version>1.3.2</folialib.version>
+        <folialib.version>1.3.3</folialib.version>
         <floodgate.version>2.0-SNAPSHOT</floodgate.version>
         <morepaperlib.version>0.5.3</morepaperlib.version>
 
