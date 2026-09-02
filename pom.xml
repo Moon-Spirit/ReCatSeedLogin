@@ -27,7 +27,7 @@
         <velocity.version>4.0.0</velocity.version>
         <sqlite.version>3.53.2.1</sqlite.version>
         <mysql.version>26.7.0</mysql.version>
-        <snakeyaml.version>2.6</snakeyaml.version>
+        <snakeyaml.version>2.7</snakeyaml.version>
         <commons-email.version>1.6.0</commons-email.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-net.version>3.13.0</commons-net.version>
